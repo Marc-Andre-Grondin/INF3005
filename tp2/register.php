@@ -7,9 +7,8 @@ if(!empty($_POST)){
 	$prenom = mysqli_real_escape_string($db, $_POST['prenom']);
 	$adresse = mysqli_real_escape_string($db, $_POST['adresse']);
 	$photo = mysqli_real_escape_string($db, $_POST['photo']);
-	$formation = mysqli_real_escape_string($db, $_POST['formation']);
-	$interets = mysqli_real_escape_string($db, $_POST['interets']);
-	$public = mysqli_real_escape_string($db, $_POST['isPublic']);
+	$formation = mysqli_real_escape_string($db, $_POST['formations']);
+	$public = (int)$_POST['is_public'];
 
 	$sql = "INSERT INTO user 
 			VALUES(
@@ -21,7 +20,7 @@ if(!empty($_POST)){
 				'$prenom',
 				'$photo',
 				'$formation',
-				'$interets',
+				'',
 				'$public'
 			)";
 
@@ -32,6 +31,7 @@ if(!empty($_POST)){
 		$_SESSION['logged_in'] = 1;
 
 		header('Location: index.php');
+		exit;
 	}
 }
 
@@ -54,15 +54,15 @@ echo 	"<script>
 				} else if(!form.prenom.value || form.prenom.value.length === 0){
 					ok = false;
 					alert('Veuillez entrer votre prénom.');
+				} else if(!form.photo.value || form.photo.value.length === 0){
+					ok = false;
+					alert('Veuillez entrer le lien vers votre photo.');
 				} else if(!form.adresse.value || form.adresse.value.length === 0){
 					ok = false;
 					alert('Veuillez entrer votre adresse.');
 				} else if(!form.formation.value || form.formation.value.length === 0){
 					ok = false;
 					alert('Veuillez entrer vos formations.');
-				} else if(!form.interets.value || form.interets.value.length === 0){
-					ok = false;
-					alert('Veuillez entrer vos intérêts.');
 				}
 
 				return ok;
@@ -70,7 +70,7 @@ echo 	"<script>
 		</script>
 		<br><br>
 		<p style='font-size: large;'>Formulaire d'inscription pour nouveau membre</p>
-		<form name='registerForm' id='registerForm' method='POST' onsubmit='return valider(this);'>
+		<form name='registerForm' id='registerForm' method='POST' onsubmit='return valider(this);' novalidate='novalidate'>
 			<table style='width: 100%;'>
 				<tr>
 					<td style='width: 50%;'>Nom d'usager : </td>
@@ -98,21 +98,17 @@ echo 	"<script>
 				</tr>
 				<tr>
 					<td>Photo : </td>
-					<td><input type='file' id='photo' name='photo' style='width: 100%;'></td>
+					<td><input type='text' id='photo' name='photo' style='width: 100%;'></td>
 				</tr>
 				<tr>
 					<td>Formations : </td>
 					<td><textarea id='formation' name='formation' value='' style='width: 100%;'></textarea></td>
 				</tr>
 				<tr>
-					<td>Champs d'intérêts : </td>
-					<td><input type='text' id='interets' name='interets' style='width: 100%;'></td>
-				</tr>
-				<tr>
 					<td>Est-ce que vos informations peuvent être divulguées à tous? </td>
 					<td>
-						<input type='radio' id='isPublic' name='isPublic' value='Y' checked>Oui&nbsp;&nbsp;&nbsp;
-						<input type='radio' id='isPublic' name='isPublic' value='N'>Non
+						<input type='radio' id='isPublic' name='isPublic' value='1' checked>Oui&nbsp;&nbsp;&nbsp;
+						<input type='radio' id='isPublic' name='isPublic' value='0'>Non
 					</td>
 				</tr>
 				<tr>
@@ -120,5 +116,4 @@ echo 	"<script>
 				</tr>
 			</table>
 		</form>";
-
 ?>

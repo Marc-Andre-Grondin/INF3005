@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 error_reporting(E_ALL);
 ini_set('display_errors','on');
 
@@ -17,13 +18,11 @@ if(!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']){
 	}
 } else {
 	switch($action){
-		case 'homepage' : 	require_once('homepage.php');
-							break;
 		case 'logout'	:	require_once('logout.php');
 							break;
 		case 'profile'	:	require_once('profile.php');
 							break;
-		default			:	require_once('mainpage.php');
+		default			:	require_once('homepage.php');
 							break;
 	}
 }

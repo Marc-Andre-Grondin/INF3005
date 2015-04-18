@@ -4,7 +4,7 @@ if(!empty($_POST)){
 	$user = $_POST['username'];
 	$pass = $_POST['password'];
 
-	$sql = "SELECT count(*) as nb FROM user WHERE username = '$user' AND password = '$pass'";
+	$sql = "SELECT count(*) as nb, u_id FROM user WHERE username = '$user' AND password = '$pass'";
 
 	$result = mysqli_query($db, $sql);
 	$result = mysqli_fetch_assoc($result);
@@ -12,8 +12,10 @@ if(!empty($_POST)){
 	if($result['nb'] == 1){
 		session_start();
 		$_SESSION['logged_in'] = 1;
+		$_SESSION['uid'] = $result['u_id'];
 
 		header('Location: index.php');
+		exit;
 	}
 }
 
